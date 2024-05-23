@@ -1,4 +1,8 @@
-# sqwilly
+<div align="center">
+    <img width="100%" src="public/cover.png">
+</div>
+<hr>
+
 so, the idea is to make a tool to visualize relationship between two selected sql tables, because sometimes it's so hard to find exact fields that connect two tables (as it may be a pretty long path through multiple tables). 
 
 features to add:
