@@ -1,14 +1,18 @@
 # sqwilly
+so, the idea is to make a tool to visualize relationship between two selected sql tables, because sometimes it's so hard to find exact fields that connect two tables (as it may be a pretty long path through multiple tables). 
 
-This template should help get you started developing with Vue 3 in Vite.
+features to add:
+- route highlighting
+- generate joins sql request
+- some imports & outputs
+- does draw.io have auto drawing, when pasting just raw data??
+- import from image (mb)
 
-## Recommended IDE Setup
+decided to create this using vue lol why everyone hates angular
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+packages i plan to use:
+- https://kit.svelte.dev/docs/introduction
+- https://www.svelvet.io/
 
 ## Project Setup
 
