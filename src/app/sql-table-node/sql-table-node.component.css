@@ -1,0 +1,148 @@
+* {
+    --head-bg-color: #171717;
+    --head-text-color: #E5E5E5;
+    --bg-color: #fafafa;
+    --text-color: #1b1b1b;
+    --border-color: #3c3c3c;
+    --border-color-focused: #4555fd;
+    --color-error: #fd5a45;
+    --outline-width: 2px;
+    --cell-button-color: #000000;
+    --cell-button-background-color: rgba(240, 240, 240, 0);
+    --cell-button-background-color-hover: rgba(240, 240, 240, 1);
+    --cell-button-size: 15px;
+    --cell-button-visibility: none;
+}
+
+*::-webkit-scrollbar {
+    display: none;
+}
+
+table {
+    border-spacing: 0;
+    border-collapse: collapse;
+    background: var(--bg-color);
+    border: solid var(--border-color) 1px;
+}
+
+td, th {
+    border-left: solid var(--border-color) 1px;
+    border-top: solid var(--border-color) 1px;
+}
+
+th {
+    background-color: var(--head-bg-color);
+}
+
+tr.primary * {
+    font-weight: 500;
+}
+
+.name-cell {
+    padding-right: var(--cell-button-size);
+}
+
+td * {
+    vertical-align: top;
+}
+
+td textarea, td {
+    color: var(--text-color);
+    font-size: 13px;
+    line-height: 18px;
+}
+
+td.type-cell {
+    width: 25px;
+    text-align: center;
+    cursor: pointer;
+}
+
+td:focus-within {
+    outline: var(--outline-width) solid var(--border-color-focused);
+    outline-offset: calc(0.5px - var(--outline-width));
+}
+
+td textarea, th textarea {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    display: block;
+    flex-basis: auto;
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+td section, th section {
+    padding: 5px 6px;
+    display: flex;
+    flex-basis: auto;
+    flex-grow: 1;
+    flex-shrink: 1;
+    align-items: center;
+}
+
+th textarea {
+    color: var(--head-text-color);
+}
+
+.invalid {
+    border: var(--color-error) 1px double;
+}
+
+.invalid th {
+    background: var(--color-error);
+}
+
+/*.invalid {*/
+/*    outline: #fd5a45 var(--outline-width) solid;*/
+/*    outline-offset: calc(0.5px - var(--outline-width));*/
+/*}*/
+
+.cell-button {
+    vertical-align: center;
+    display: var(--cell-button-visibility) !important;
+    width: var(--cell-button-size) !important;
+    height: var(--cell-button-size) !important;
+    padding: 0 !important;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 50%;
+    padding-inline: 0 !important;
+    position: relative;
+    flex-shrink: 0;
+    color: var(--cell-button-color);
+    background-color: var(--cell-button-background-color);
+    transition: background-color 0.05s ease-in-out;
+
+    & > *[role=img] {
+        width: calc(var(--cell-button-size) - 4px);
+        height: calc(var(--cell-button-size) - 4px);
+        font-size: calc(var(--cell-button-size) - 4px);
+
+        svg {
+            width: calc(var(--cell-button-size) - 4px);
+            height: calc(var(--cell-button-size) - 4px);
+        }
+    }
+}
+
+.cell-button:hover {
+    background-color: var(--cell-button-background-color-hover);
+}
+
+.name-cell:hover {
+    padding-right: 0;
+}
+
+th .cell-button {
+    --cell-button-color: #FFFFFF;
+    --cell-button-background-color: rgba(50, 50, 50, 0);
+    --cell-button-background-color-hover: rgba(50, 50, 50, 1);
+    display: inline-flex !important;
+}
+
+.name-cell:hover .cell-button {
+    display: inline-flex !important;
+}

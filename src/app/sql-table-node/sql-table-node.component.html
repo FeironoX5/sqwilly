@@ -1,0 +1,55 @@
+<table [ngClass]="{'invalid': isTableValid().length != 0}" [matTooltip]="isTableValid()">
+    <thead>
+    <tr>
+        <th colspan="2">
+            <section>
+                <button class="cell-button"
+                        style="background: var(--cell-button-background-color)!important; margin-right: 3px;">
+                    <mat-icon>drag_indicator</mat-icon>
+                </button>
+                <textarea (keydown)="headerKeyPressed($event)"
+                          spellcheck="false"
+                          cdkTextareaAutosize
+                          [(ngModel)]="node.data!.name"></textarea>
+                <button class="cell-button" [matMenuTriggerFor]="tableMenu">
+                    <mat-icon>menu_horizontal</mat-icon>
+                </button>
+                <mat-menu #tableMenu="matMenu">
+                    <button mat-menu-item (click)="addCell()">
+                        <mat-icon>add</mat-icon>
+                        <span>Add new field</span>
+                    </button>
+                    <button mat-menu-item>
+                        <mat-icon class="material-icons-outlined">table_rows</mat-icon>
+                        <span>Specify fields number</span>
+                    </button>
+                    <button mat-menu-item>
+                        <mat-icon class="material-icons-outlined">delete</mat-icon>
+                        <span>Delete table</span>
+                    </button>
+                </mat-menu>
+            </section>
+        </th>
+    </tr>
+    </thead>
+    @for (field of node.data!.fields | orderFields; let i = $index; track field.name) {
+        <tr [ngClass]="{'primary': field.isPrimary, 'invalid': isFieldValid(i).length != 0}"
+            [matTooltip]="isFieldValid(i)" matTooltipPosition="right">
+            <td class="type-cell"
+                (click)="field.isPrimary = !field.isPrimary">{{ field.isPrimary ? 'PK' : '' }}
+            </td>
+            <td class="name-cell">
+                <section>
+                    <textarea #fieldName (keydown)="cellKeyPressed($event, i)"
+                              spellcheck="false"
+                              cdkTextareaAutosize
+                              [(ngModel)]="field.name"></textarea>
+                    <button class="cell-button" (click)="removeCell(i)">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </section>
+            </td>
+            <handle position="right" type="source"/>
+        </tr>
+    }
+</table>
