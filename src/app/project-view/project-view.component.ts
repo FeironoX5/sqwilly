@@ -1,4 +1,15 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild} from '@angular/core';
+import {
+    AfterContentChecked,
+    AfterContentInit, AfterRenderRef,
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    ElementRef,
+    Input,
+    OnInit,
+    ViewChild
+} from '@angular/core';
 import {
     MatDrawer,
     MatDrawerContainer, MatDrawerContent,
@@ -11,13 +22,14 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatTooltip} from "@angular/material/tooltip";
 import {NgClass, NgIf} from "@angular/common";
-import {Node, VflowComponent, VflowModule} from "ngx-vflow";
-import {SqlTableNodeComponent} from "../sql-table-node/sql-table-node.component";
-import {SQLTable} from "../utils/models";
+import {Node, NodeChange, NodePositionChange, VflowModule} from "ngx-vflow";
 import {RouterLink, RouterOutlet} from "@angular/router";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatToolbar} from "@angular/material/toolbar";
 import {FormsModule} from "@angular/forms";
+import html2canvas from "html2canvas";
+import {ProjectManager} from "../utils/services/project.manager";
+import {ProjectService} from "../utils/services/project.service";
 
 @Component({
     selector: 'app-project-view',
@@ -49,75 +61,73 @@ import {FormsModule} from "@angular/forms";
     styleUrl: './project-view.component.css',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProjectViewComponent {
-    @ViewChild(VflowComponent)
-    public vflow!: VflowComponent
+export class ProjectViewComponent implements OnInit {
+    // INPUTS
+    @Input()
+    set id(projectId: string) {
+        this.projectId = projectId;
+        this.changeDetectorRef.detectChanges();
+    }
 
-    nodes: Node[] = [
-        {
-            id: '1',
-            point: {x: 10, y: 200},
-            type: SqlTableNodeComponent,
-            data: {
-                name: 'rockets',
-                fields: [
-                    {name: 'id', isPrimary: false},
-                    {name: 'name', isPrimary: true},
-                    {name: 'stages', isPrimary: false},
-                ]
-            } satisfies SQLTable
-        },
-        {
-            id: '2',
-            point: {x: 250, y: 200},
-            type: SqlTableNodeComponent,
-            data: {
-                name: 'nose cones',
-                fields: [
-                    {name: 'id', isPrimary: false},
-                    {name: 'name', isPrimary: true},
-                    {name: 'model', isPrimary: false},
-                    {name: 'rocket_id', isPrimary: false},
-                ]
-            } satisfies SQLTable
-        },
-    ];
-    textView: string = JSON.stringify(this.nodes);
+    // ELEMENTS
+    @ViewChild('flow', {static: true}) public flow: any;
+    @ViewChild('projectNameInput') private projectName: any;
+    // VARS
+    projectId: string = '';
+    projectManager: ProjectManager = new ProjectManager();
     savingInProgress: boolean = false;
-    window = window;
+    // READONLY VARS
+    protected readonly window = window;
 
-    constructor(private changeDetectorRef: ChangeDetectorRef) {
+    // INITS
+    constructor(
+        private changeDetectorRef: ChangeDetectorRef,
+    ) {
     }
 
-    addNode(contentContainer: HTMLDivElement) {
-        this.nodes = [...this.nodes, {
-            id: (this.nodes.length + 1).toString(),
-            point: this.vflow.documentPointToFlowPoint({
-                x: contentContainer.clientWidth / 2 - 96,
-                y: contentContainer.clientHeight / 2
-            }),
-            type: SqlTableNodeComponent,
-            data: {
-                name: '',
-                fields: []
-            } satisfies SQLTable
-        }];
+    ngOnInit() {
+        this.projectManager.initialize(this.projectId);
     }
 
+    // FUNCTIONS
     textViewChanged() {
-        this.nodes = JSON.parse(this.textView);
-        this.textView = JSON.stringify(this.nodes);
+        // this.nodes = JSON.parse(this.textView);
+        // this.textView = JSON.stringify(this.nodes);
     }
 
     save() {
-        if (!this.savingInProgress) {
+        console.log(this.flow);
+        if (!this.savingInProgress && this.projectManager.$project) {
             this.savingInProgress = true;
-            setTimeout(() => {
-                console.log("true", this.savingInProgress);
+            this.captureCanvas().then(result => {
+                this.projectManager.$project!.imagePreviewData = result;
+                this.projectManager.$project!.name = this.projectName.nativeElement.outerText;
+                ProjectService.updateProject(this.projectManager.$project!);
                 this.savingInProgress = false;
                 this.changeDetectorRef.detectChanges();
-                console.log("true", this.savingInProgress);
-            }, 700);
+            });
         }
+    }
+
+    async captureCanvas(): Promise<string> {
+        const canvas = document.getElementById('flow')!;
+        const icons = canvas.querySelectorAll('mat-icon');
+        icons.forEach((icon: any) => icon.style.display = 'none');
+        const textareas = canvas.querySelectorAll('textarea');
+        textareas.forEach((textarea: HTMLTextAreaElement) => textarea.innerHTML = textarea.value)
+        const canvasElement = await html2canvas(canvas, {
+            useCORS: true,
+            foreignObjectRendering: true,
+        });
+        icons.forEach((icon: any) => icon.style.display = 'block');
+        return canvasElement.toDataURL('image/png');
+    }
+
+    debug() {
+        console.log(this.flow);
+    }
+
+    updateNodePosition(changes: NodePositionChange[]) {
+        changes.forEach(change => this.projectManager.$project!.nodes.filter((node: Node) => node.id == change.id)[0].point = change.point);
     }
 }

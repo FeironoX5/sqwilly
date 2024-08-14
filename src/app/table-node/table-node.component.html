@@ -5,14 +5,14 @@
             <section>
                 <button class="cell-button"
                         style="background: var(--cell-button-background-color)!important; margin-right: 3px;">
-                    <mat-icon>drag_indicator</mat-icon>
+                    <mat-icon style="color: var(--head-text-color)">drag_indicator</mat-icon>
                 </button>
                 <textarea (keydown)="headerKeyPressed($event)"
                           spellcheck="false"
                           cdkTextareaAutosize
                           [(ngModel)]="node.data!.name"></textarea>
                 <button class="cell-button" [matMenuTriggerFor]="tableMenu">
-                    <mat-icon>menu_horizontal</mat-icon>
+                    <mat-icon style="color: var(--head-text-color)">menu_horizontal</mat-icon>
                 </button>
                 <mat-menu #tableMenu="matMenu">
                     <button mat-menu-item (click)="addCell()">

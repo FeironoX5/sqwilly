@@ -1,0 +1,15 @@
+#header {
+    top: 10px;
+    right: 7px;
+    left: 7px;
+}
+
+#header * {
+    border: none !important;
+}
+
+#header, #header * {
+    --toolbar-height: 45px;
+    --toolbar-gap: 7px;
+}
+

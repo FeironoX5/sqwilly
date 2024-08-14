@@ -1,5 +1,41 @@
+<div style="height: 40vh;">
+    <div class="centered flex-column full">
+        <button class="icon-text-button" (click)="iWantPashalka()" style="cursor: pointer;">
+            <img src="logo.svg">
+        </button>
+        <p style="opacity: 0.2;text-align: center">developed by Gleb Kiva</p>
+    </div>
+</div>
+<div style="padding: 0 20px 20px;display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px 10px">
+    <img src="gnojnyj-privet.gif" *ngIf="pashalkaCounter > 5">
+    <input class="big-input" placeholder="Поиск проекта" style="grid-column-start: 1;  grid-column-end: 4;"
+           [(ngModel)]="projectSearchValue">
+    <div *ngIf="!projectSearchValue" class="create-button" (click)="createProject()">
+        <div class="create-button-section">
+            <mat-icon inline class="create-button-section-icon">add</mat-icon>
+            <span>Новый проект</span>
+        </div>
+        <hr style="border: var(--border-disabled-color) solid 0.5px; width: 100%;">
+        <div class="create-button-section">
+            <mat-icon inline class="create-button-section-icon">folder_open</mat-icon>
+            <span>Открыть из файла</span>
+        </div>
+    </div>
+    @for (project of projects | projectFilter: projectSearchValue; track projects) {
+        <div class="card clickable" [routerLink]="'/projects/' + project.id">
+            <div class="header">
+                <span class="title">{{ project.name }}</span>
+                <span class="subtitle">{{ project.createdAt | date: 'short' }}</span>
+            </div>
+            <div class="crop-container" style="width: 100%; height: var(--project-image-height);">
+                <img [src]="project.imagePreviewData ? project.imagePreviewData : 'empty_preview.png'"
+                     style="width: calc(100% + 2px); calc(var(--project-image-height) + 2px); margin-left: -2px; margin-top: -2px;">
+            </div>
+        </div>
+    }
+</div>
+
 <!--создать новый проект пустой/ввод/файл-->
 <!--поиск проектов-->
-<input>
 <!--недавние проекты-->
 <!--проекты-->

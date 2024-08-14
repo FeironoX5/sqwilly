@@ -1,32 +1,25 @@
 import {
-    ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
     ElementRef,
-    Pipe,
-    PipeTransform,
     QueryList,
-    signal,
     ViewChildren
 } from '@angular/core';
 import {CustomNodeComponent, VflowModule} from "ngx-vflow";
 import {SQLField, SQLTable} from "../utils/models";
-import {MatListItem, MatListItemIcon, MatListItemTitle, MatListOption, MatSelectionList} from "@angular/material/list";
-import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/material/card";
 import {MatFormField, MatInput, MatPrefix, MatSuffix} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
-import {MatDivider} from "@angular/material/divider";
 import {MatIcon} from "@angular/material/icon";
 import {OrderFields} from "../utils/pipes";
 import {CdkTextareaAutosize} from "@angular/cdk/text-field";
 import {NgClass, NgStyle} from "@angular/common";
 import {MatIconButton} from "@angular/material/button";
 import {MatTooltip} from "@angular/material/tooltip";
-import {CommentsHandler} from "../utils/comments-handler";
+import {CommentsHandler} from "../utils/handlers/comments-handler";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 
 @Component({
-    selector: 'app-sql-table-node',
+    selector: 'app-table-node',
     standalone: true,
     imports: [
         OrderFields,
@@ -46,10 +39,10 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
         MatMenu,
         MatMenuItem
     ],
-    templateUrl: './sql-table-node.component.html',
-    styleUrl: './sql-table-node.component.css'
+    templateUrl: './table-node.component.html',
+    styleUrl: './table-node.component.css'
 })
-export class SqlTableNodeComponent extends CustomNodeComponent<SQLTable> {
+export class TableNodeComponent extends CustomNodeComponent<SQLTable> {
     @ViewChildren('fieldName') fieldNames: QueryList<ElementRef> | undefined;
 
     constructor(private changeDetectorRef: ChangeDetectorRef) {

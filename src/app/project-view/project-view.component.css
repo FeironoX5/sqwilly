@@ -1,40 +1,10 @@
-* {
-    --toolbar-height: 70px;
-    --toolbar-gap: 10px;
-    --text-lightness: 50;
-    --text-color: rgb(var(--text-lightness), var(--text-lightness), var(--text-lightness));
-    --border-color: #B4B4B4;
-    --menu-background-color: #FFFFFF;
-    --menu-button-background-color: rgba(245, 245, 245, 0);
-    --menu-button-background-color-hover: rgba(245, 245, 245, 1);
-}
-
 .mat-spinner-white::ng-deep circle {
     stroke: #FFFFFF !important;
 }
 
-.menu {
-    position: absolute;
-    border-radius: 15px;
-    border: var(--border-color) solid 1px;
-    background: var(--menu-background-color);
-    display: flex;
-    flex-wrap: nowrap;
-    gap: var(--toolbar-gap);
-    padding: 0 var(--toolbar-gap);
-    height: var(--toolbar-height);
-}
-
-.menu * {
-    color: var(--text-color);
-}
-
-
 #toolbar {
     bottom: 30px;
     box-shadow: 0px 3px 8px 0px rgba(34, 60, 80, 0.1);
-    justify-content: center;
-    align-items: center;
     left: 50%;
     transform: translate(-50%, 0);
 }
@@ -42,15 +12,11 @@
 #export {
     top: 20px;
     right: 20px;
-    justify-content: center;
-    align-items: center;
 }
 
 #info {
     top: 20px;
     left: 20px;
-    justify-content: center;
-    align-items: center;
 }
 
 #info * {
@@ -60,88 +26,4 @@
 #export, #export *, #info, #info * {
     --toolbar-height: 45px;
     --toolbar-gap: 7px;
-}
-
-.menu button {
-    border: var(--border-color) solid 1px;
-    border-radius: 5px;
-    background-color: var(--menu-button-background-color);
-    transition: background-color 0.1s ease-in-out;
-    cursor: pointer;
-    height: calc(var(--toolbar-height) - var(--toolbar-gap) * 2);
-}
-
-.menu button * {
-    vertical-align: middle;
-}
-
-.icon-button {
-    width: calc(var(--toolbar-height) - var(--toolbar-gap) * 2);
-}
-
-.menu button mat-icon {
-    --icon-size: 23px;
-    font-size: var(--icon-size);
-    height: var(--icon-size);
-}
-
-
-button:not(.icon-button) {
-    padding: 0 10px;
-}
-
-.icon-text-button {
-    padding: 0 5px 0 10px !important;
-}
-
-button:not(.icon-button) img {
-    --logo-img-margin: 5px;
-    display: inline-block;
-    height: calc((var(--toolbar-height) - var(--toolbar-gap) * 2) - var(--logo-img-margin) * 2);
-    margin: var(--logo-img-margin) 0;
-}
-
-button.highlighted {
-    --menu-button-background-color: rgb(212, 105, 101);
-    --menu-button-background-color-hover: rgb(189, 93, 90);
-    --border-color: rgb(212, 105, 101);
-}
-
-button.highlighted * {
-    --text-color: #FFFFFF;
-}
-
-.menu button:hover {
-    background-color: var(--menu-button-background-color-hover);
-}
-
-.icon-button.active {
-    --menu-button-background-color: rgba(16, 16, 16, 1) !important;
-    --menu-button-background-color-hover: rgba(16, 16, 16, 1) !important;
-    --border-color: rgb(16, 16, 16) solid 1px !important;
-}
-
-.icon-button.active * {
-    --text-color: #FFFFFF;
-}
-
-.menu button:not(.icon-button).active {
-    background-color: var(--menu-button-background-color-hover);
-    color: inherit;
-}
-
-.menu .input {
-    height: calc(var(--toolbar-height) - var(--toolbar-gap) * 2);
-    line-height: calc(var(--toolbar-height) - var(--toolbar-gap) * 2);
-    border: var(--border-color) solid 1px;
-    border-radius: 5px;
-    background-color: var(--menu-button-background-color);
-    transition: background-color 0.1s ease-in-out;
-    padding: 0 10px;
-    font-size: 14px;
-    font-weight: 500;
-}
-
-.menu .input:hover, .menu .input:focus {
-    background-color: var(--menu-button-background-color-hover);
 }

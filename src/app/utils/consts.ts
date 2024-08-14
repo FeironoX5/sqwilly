@@ -1,0 +1,1 @@
+export const LS_PROJECTS_KEY = 'projects';

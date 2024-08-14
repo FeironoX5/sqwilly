@@ -11,5 +11,4 @@ export class RequirementHandler {
     public static isNonEmptyArray(value: any[]): boolean {
         return !(value == null || value.length == 0);
     }
-
 }
