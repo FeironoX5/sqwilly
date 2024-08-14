@@ -8,7 +8,8 @@
 </div>
 <div style="padding: 0 20px 20px;display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px 10px">
     <img src="gnojnyj-privet.gif" *ngIf="pashalkaCounter > 5">
-    <input class="big-input" placeholder="Поиск проекта" style="grid-column-start: 1;  grid-column-end: 4;"
+    <input *ngIf="projects.length > 3" class="big-input" placeholder="Поиск проекта"
+           style="grid-column-start: 1;  grid-column-end: 4;"
            [(ngModel)]="projectSearchValue">
     <div *ngIf="!projectSearchValue" class="create-button" (click)="createProject()">
         <div class="create-button-section">
