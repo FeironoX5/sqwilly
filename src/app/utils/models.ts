@@ -41,5 +41,11 @@ export interface SQLTable {
 
 export interface SQLField {
     name: string,
-    isPrimary: boolean
+    isPrimary: boolean,
+    references: SQLFieldReference | null
+}
+
+export interface SQLFieldReference {
+    tableName: string,
+    fieldName: string
 }

@@ -1,10 +1,11 @@
 @if (projectManager.$project) {
     <mat-drawer-container style="position: absolute;  top: 0;  bottom: 0;  left: 0;  right: 0;" autosize>
         <mat-drawer #sidenav mode="side" position="end">
-            <div style="width: calc(100% - 20px*2); height: calc(100% - 20px*2); padding: 20px;">
-            <textarea (change)="textViewChanged()"
-                      style="width: 100%; height: 100%; background: transparent"></textarea>
-            </div>
+            <textarea [(ngModel)]="textView"
+                      style="width: calc(100% - 40px); height: calc(100% - 50px - 40px); padding: 20px; background: transparent"></textarea>
+            <button style="width: 100%; height: 50px; background: #232323; cursor: pointer"
+                    (click)="decodeTextView()">Проверить
+            </button>
         </mat-drawer>
         <div #contentContainer style="height: 100%; width: 100%; position: relative; overflow: hidden;">
             <div class="menu" id="toolbar">
@@ -14,12 +15,17 @@
                 </button>
                 <button matTooltip="Search through tables (Ctrl + F)" class="icon-button">
                     <mat-icon>search</mat-icon>
-                </button>
-                <button matTooltip="Tidy up (Ctrl + Alt + L)" class="icon-button">
+                </button>`
+                <button matTooltip="Tidy up (Ctrl + Alt + L)" class="icon-button"
+                        (click)="fixLayout()">
                     <mat-icon>category</mat-icon>
                 </button>
                 <button matTooltip="Debug" class="icon-button" (click)="debug()">
                     <mat-icon>adb</mat-icon>
+                </button>
+                <button matTooltip="Zoom to fit content" class="icon-button"
+                        (click)="zoomToFit()">
+                    <mat-icon>center_focus_weak</mat-icon>
                 </button>
                 <button matTooltip="Parse tables" class="icon-button">
                     <mat-icon>bolt</mat-icon>
@@ -66,7 +72,7 @@
                 <span #projectNameInput class="input" spellcheck="false" role="textbox"
                       contenteditable>{{ projectManager.$project.name }}</span>
             </div>
-            <vflow #flow id="flow" [nodes]="projectManager.$project.nodes" view="auto"
+            <vflow id="flow" [nodes]="projectManager.$project.nodes" view="auto"
                    [background]="{type: 'dots', color: '#424242', backgroundColor: '#161617'}"
                    (onNodesChange.position)="updateNodePosition($event)"></vflow>
         </div>
@@ -74,6 +80,8 @@
 } @else {
     <div style="width: 100%; height: 100%;display: flex; flex-flow: column nowrap; align-items: center; justify-content: center">
         <p>No such project</p>
-        <button class="container clickable" style="padding: 10px; margin-top: 10px;" routerLink="/dashboard">Back to dashboard</button>
+        <button class="container clickable" style="padding: 10px; margin-top: 10px;" routerLink="/dashboard">Back to
+            dashboard
+        </button>
     </div>
 }

@@ -93,7 +93,7 @@ export class TableNodeComponent extends CustomNodeComponent<SQLTable> {
     }
 
     addCell() {
-        this.node.data!.fields.push({name: '', isPrimary: false});
+        this.node.data!.fields.push({name: '', isPrimary: false, references: null});
         this.changeDetectorRef.detectChanges();
         this.fieldNames?.last.nativeElement.focus();
     }

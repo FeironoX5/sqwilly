@@ -2,6 +2,11 @@
 
 a tool to visualize relationship between two selected sql tables, because sometimes it's so hard to find exact fields that connect two tables (as it may be a pretty long path through multiple tables).
 
+баг когда убриаешь символы из поиска
+баг на кнпоке когда она выбрана текст вью
+странно ведут себя картинки в дашборде
+макс. длина на нзвание проекта
+
 features to add:
 - route highlighting
 - generate joins sql request

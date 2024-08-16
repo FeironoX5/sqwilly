@@ -15,7 +15,6 @@ export class ProjectManager {
     }
 
     addNode(flow: any,contentContainer: HTMLDivElement) {
-        console.log(flow, typeof flow);
         this.$project!.nodes = [...this.$project!.nodes, {
             id: crypto.randomUUID(),
             point: flow.documentPointToFlowPoint({
