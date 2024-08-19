@@ -37,7 +37,7 @@ import {MatMenu, MatMenuItem, MatMenuModule, MatMenuTrigger} from "@angular/mate
 })
 export class TableNodeComponent extends CustomNodeComponent<SQLTable> {
     @ViewChildren('fieldName') fieldNames: QueryList<ElementRef> | undefined;
-
+ // todo подписка на изменение хуйни говна
     constructor(private changeDetectorRef: ChangeDetectorRef) {
         super();
     }

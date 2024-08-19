@@ -26,19 +26,23 @@
                     (click)="fixLayout()">
                 <mat-icon>category</mat-icon>
             </button>
+            <button matTooltip="Debug" class="icon-button"
+                    (click)="debug()">
+                <mat-icon>adb</mat-icon>
+            </button>
             <button matTooltip="Zoom to fit content (Ctrl + 0)" class="icon-button"
                     (click)="zoomToFit()">
                 <mat-icon>center_focus_weak</mat-icon>
-            </button>
-            <button [matTooltip]="(parsingSidenav.opened ? 'Close' : 'Open') + ' parsing tool (Ctrl + K)'"
-                    class="icon-button"
-                    (click)="parsingSidenav.toggle()" [ngClass]="{'active': parsingSidenav.opened}">
-                <mat-icon>bolt</mat-icon>
             </button>
             <button [matTooltip]="(requestBuilderSidenav.opened ? 'Close' : 'Open') + ' request builder (Ctrl + P)'"
                     class="icon-button"
                     (click)="requestBuilderSidenav.toggle()" [ngClass]="{'active': requestBuilderSidenav.opened}">
                 <mat-icon>route</mat-icon>
+            </button>
+            <button [matTooltip]="(parsingSidenav.opened ? 'Close' : 'Open') + ' parsing tool (Ctrl + K)'"
+                    class="icon-button"
+                    (click)="parsingSidenav.toggle()" [ngClass]="{'active': parsingSidenav.opened}">
+                <mat-icon>bolt</mat-icon>
             </button>
         </div>
         <div class="menu" id="export">

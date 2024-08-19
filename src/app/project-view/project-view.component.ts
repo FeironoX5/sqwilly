@@ -1,13 +1,14 @@
 import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
-    Component, Directive, HostListener,
+    Component,
+    HostListener,
     Input,
     OnInit,
     ViewChild
 } from '@angular/core';
 import {NgClass, NgForOf, NgIf} from "@angular/common";
-import {Node, NodeChange, NodePositionChange, VflowComponent, VflowModule} from "ngx-vflow";
+import {Node, NodePositionChange, VflowComponent, VflowModule} from "ngx-vflow";
 import {RouterLink, RouterOutlet} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import html2canvas from "html2canvas";
@@ -22,6 +23,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
+import {SQLField} from "../utils/models";
 
 
 @Component({
@@ -111,6 +113,7 @@ export class ProjectViewComponent implements OnInit {
 
     ngOnInit() {
         this.projectManager.initialize(this.projectId);
+        this.updateTablesDataFromNodes();
     }
 
     // FUNCTIONS
@@ -141,10 +144,6 @@ export class ProjectViewComponent implements OnInit {
         return canvasElement.toDataURL('image/png');
     }
 
-    debug() {
-        console.log(this.decoderService.decode(this.textView));
-        console.log(JSON.stringify(this.decoderService.decode(this.textView)));
-    }
 
     updateNodePosition(changes: NodePositionChange[]) {
         changes.forEach(change => this.projectManager.$project!.nodes.filter((node: Node) => node.id == change.id)[0].point = change.point);
@@ -207,7 +206,20 @@ export class ProjectViewComponent implements OnInit {
         // this.edges = edgesToLayout
     }
 
+    updateTablesDataFromNodes() {
+        this.textView = this.projectManager.$project!.nodes.map((node: any) => {
+            return `${node.data.name}:\n${node.data.fields.map((field: SQLField) => (field.isPrimary ? 'PK ' : '') + field.name).join('\n')}\n`;
+        }).join('\n');
+    }
+
+    debug() {
+        console.log(this.projectManager.$project!.nodes.map((node: any) => {
+            return node.data.fields.map((field: SQLField) => field.name).join('\n');
+        }).join('\n'));
+    }
+
     newNode() {
+        this.updateTablesDataFromNodes();
         this.projectManager.addNode(this.flow, this.contentContainer);
     }
 }
