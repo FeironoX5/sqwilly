@@ -37,7 +37,7 @@ export class DecoderService {
         });
         let nodes: Node[] = objectTables.map(objectTable => {
             return {
-                id: '',
+                id: crypto.randomUUID(),
                 point: {x: 0, y: 0},
                 type: TableNodeComponent,
                 data: {

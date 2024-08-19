@@ -13,6 +13,7 @@ features to add:
 - some imports & outputs
 - does draw.io have auto drawing, when pasting just raw data??
 - import from image (mb)
+- курсорчики сделать
 
 ## Development server
 

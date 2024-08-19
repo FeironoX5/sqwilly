@@ -1,87 +1,92 @@
-@if (projectManager.$project) {
-    <mat-drawer-container style="position: absolute;  top: 0;  bottom: 0;  left: 0;  right: 0;" autosize>
-        <mat-drawer #sidenav mode="side" position="end">
-            <textarea [(ngModel)]="textView"
-                      style="width: calc(100% - 40px); height: calc(100% - 50px - 40px); padding: 20px; background: transparent"></textarea>
-            <button style="width: 100%; height: 50px; background: #232323; cursor: pointer"
-                    (click)="decodeTextView()">Проверить
+<mat-drawer-container *ngIf="projectManager.$project"
+                      style="position: absolute;  top: 0;  bottom: 0;  left: 0;  right: 0;" autosize>
+    <mat-drawer #parsingSidenav mode="side" position="end">
+                <textarea (input)="decodeTextView()" [(ngModel)]="textView"
+                          style="width: calc(100% - 40px); height: calc(100% - 40px); padding: 20px; background: transparent"></textarea>
+    </mat-drawer>
+    <mat-drawer #requestBuilderSidenav mode="side" position="start">
+        <mat-form-field appearance="outline">
+            <input matInput placeholder="Placeholder">
+            <button mat-icon-button matSuffix>
+                <mat-icon>remove</mat-icon>
             </button>
-        </mat-drawer>
-        <div #contentContainer style="height: 100%; width: 100%; position: relative; overflow: hidden;">
-            <div class="menu" id="toolbar">
-                <button matTooltip="New table (Ctrl + N)" class="icon-button"
-                        (click)="projectManager.addNode(flow, contentContainer)">
-                    <mat-icon>add</mat-icon>
-                </button>
-                <button matTooltip="Search through tables (Ctrl + F)" class="icon-button">
-                    <mat-icon>search</mat-icon>
-                </button>`
-                <button matTooltip="Tidy up (Ctrl + Alt + L)" class="icon-button"
-                        (click)="fixLayout()">
-                    <mat-icon>category</mat-icon>
-                </button>
-                <button matTooltip="Debug" class="icon-button" (click)="debug()">
-                    <mat-icon>adb</mat-icon>
-                </button>
-                <button matTooltip="Zoom to fit content" class="icon-button"
-                        (click)="zoomToFit()">
-                    <mat-icon>center_focus_weak</mat-icon>
-                </button>
-                <button matTooltip="Parse tables" class="icon-button">
-                    <mat-icon>bolt</mat-icon>
-                </button>
-                <button [matTooltip]="(sidenav.opened ? 'Close' : 'Open') + ' text view (Ctrl + K)'" class="icon-button"
-                        (click)="sidenav.toggle()" [ngClass]="{'active': sidenav.opened}">
-                    <mat-icon>menu</mat-icon>
-                </button>
-            </div>
-            <div class="menu" id="export">
-                <button class="accent" (click)="save()">
-                    <span *ngIf="!savingInProgress">Save</span>
-                    <mat-spinner *ngIf="savingInProgress" diameter="20" class="mat-spinner-white"></mat-spinner>
-                </button>
-                <button (click)="captureCanvas()">
-                    <span>Export image</span>
-                </button>
-            </div>
-            <div class="menu" id="info" #info>
-                <button class="icon-text-button" #fileMenuTrigger="matMenuTrigger" [matMenuTriggerFor]="fileMenu"
-                        [ngClass]="{'active': fileMenuTrigger.menuOpen}">
-                    <img src="logo.svg">
-                    <mat-icon>keyboard_arrow_down</mat-icon>
-                </button>
-                <mat-menu #fileMenu="matMenu">
-                    <button mat-menu-item>
-                        <mat-icon class="material-icons-outlined">library_add</mat-icon>
-                        <span>New project</span>
-                    </button>
-                    <button mat-menu-item>
-                        <mat-icon class="material-icons-outlined">upload_file</mat-icon>
-                        <span>Open from file</span>
-                    </button>
-                    <button mat-menu-item routerLink="/dashboard">
-                        <mat-icon class="material-icons-outlined">space_dashboard</mat-icon>
-                        <span>Back to dashboard</span>
-                    </button>
-                    <button mat-menu-item (click)="window.open('https://github.com/FeironoX5/sqwilly', '_blank')">
-                        <mat-icon class="material-icons-outlined">code</mat-icon>
-                        <span>Source code</span>
-                    </button>
-                </mat-menu>
-                <!-- TODO maxlength -->
-                <span #projectNameInput class="input" spellcheck="false" role="textbox"
-                      contenteditable>{{ projectManager.$project.name }}</span>
-            </div>
-            <vflow id="flow" [nodes]="projectManager.$project.nodes" view="auto"
-                   [background]="{type: 'dots', color: '#424242', backgroundColor: '#161617'}"
-                   (onNodesChange.position)="updateNodePosition($event)"></vflow>
+        </mat-form-field>
+        <button mat-button>Add table</button>
+    </mat-drawer>
+    <div #contentContainer style="height: 100%; width: 100%; position: relative; overflow: hidden;">
+        <div class="menu" id="toolbar">
+            <button matTooltip="New table (T)" class="icon-button"
+                    (click)="newNode()">
+                <mat-icon>add</mat-icon>
+            </button>
+            <button matTooltip="Search through tables (Ctrl + F)" class="icon-button">
+                <mat-icon>search</mat-icon>
+            </button>
+            <button matTooltip="Tidy up (Ctrl + Alt + L)" class="icon-button"
+                    (click)="fixLayout()">
+                <mat-icon>category</mat-icon>
+            </button>
+            <button matTooltip="Zoom to fit content (Ctrl + 0)" class="icon-button"
+                    (click)="zoomToFit()">
+                <mat-icon>center_focus_weak</mat-icon>
+            </button>
+            <button [matTooltip]="(parsingSidenav.opened ? 'Close' : 'Open') + ' parsing tool (Ctrl + K)'"
+                    class="icon-button"
+                    (click)="parsingSidenav.toggle()" [ngClass]="{'active': parsingSidenav.opened}">
+                <mat-icon>bolt</mat-icon>
+            </button>
+            <button [matTooltip]="(requestBuilderSidenav.opened ? 'Close' : 'Open') + ' request builder (Ctrl + P)'"
+                    class="icon-button"
+                    (click)="requestBuilderSidenav.toggle()" [ngClass]="{'active': requestBuilderSidenav.opened}">
+                <mat-icon>route</mat-icon>
+            </button>
         </div>
-    </mat-drawer-container>
-} @else {
-    <div style="width: 100%; height: 100%;display: flex; flex-flow: column nowrap; align-items: center; justify-content: center">
-        <p>No such project</p>
-        <button class="container clickable" style="padding: 10px; margin-top: 10px;" routerLink="/dashboard">Back to
-            dashboard
-        </button>
+        <div class="menu" id="export">
+            <button class="accent" (click)="save()">
+                <span *ngIf="!savingInProgress">Save</span>
+                <mat-spinner *ngIf="savingInProgress" diameter="20" class="mat-spinner-white"></mat-spinner>
+            </button>
+            <button (click)="captureCanvas()">
+                <span>Export image</span>
+            </button>
+        </div>
+        <div class="menu" id="info" #info>
+            <button class="icon-text-button" #fileMenuTrigger="matMenuTrigger" [matMenuTriggerFor]="fileMenu"
+                    [ngClass]="{'active': fileMenuTrigger.menuOpen}">
+                <img src="assets/logo.svg">
+                <mat-icon>keyboard_arrow_down</mat-icon>
+            </button>
+            <mat-menu #fileMenu="matMenu">
+                <button mat-menu-item>
+                    <mat-icon class="material-icons-outlined">library_add</mat-icon>
+                    <span>New project</span>
+                </button>
+                <button mat-menu-item>
+                    <mat-icon class="material-icons-outlined">upload_file</mat-icon>
+                    <span>Open from file</span>
+                </button>
+                <button mat-menu-item routerLink="/dashboard">
+                    <mat-icon class="material-icons-outlined">space_dashboard</mat-icon>
+                    <span>Back to dashboard</span>
+                </button>
+                <button mat-menu-item (click)="window.open('https://github.com/FeironoX5/sqwilly', '_blank')">
+                    <mat-icon class="material-icons-outlined">code</mat-icon>
+                    <span>Source code</span>
+                </button>
+            </mat-menu>
+            <!-- TODO maxlength -->
+            <span #projectNameInput class="input" spellcheck="false" role="textbox"
+                  contenteditable>{{ projectManager.$project.name }}</span>
+        </div>
+        <vflow id="flow" [nodes]="projectManager.$project.nodes" view="auto"
+               [background]="{type: 'dots', color: '#424242', backgroundColor: '#161617'}"
+               (onNodesChange.position)="updateNodePosition($event)"></vflow>
     </div>
-}
+</mat-drawer-container>
+<div *ngIf="!projectManager.$project"
+     style="width: 100%; height: 100%;display: flex; flex-flow: column nowrap; align-items: center; justify-content: center">
+    <p>No such project</p>
+    <button class="container clickable" style="padding: 10px; margin-top: 10px;" routerLink="/dashboard">Back to
+        dashboard
+    </button>
+</div>

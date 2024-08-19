@@ -1,37 +1,28 @@
 import {
-    AfterContentChecked,
-    AfterContentInit, AfterRenderRef,
-    AfterViewInit,
     ChangeDetectionStrategy,
     ChangeDetectorRef,
-    Component,
-    ElementRef,
+    Component, Directive, HostListener,
     Input,
     OnInit,
     ViewChild
 } from '@angular/core';
-import {
-    MatDrawer,
-    MatDrawerContainer, MatDrawerContent,
-    MatSidenav,
-    MatSidenavContainer,
-    MatSidenavContent
-} from "@angular/material/sidenav";
-import {MatIcon} from "@angular/material/icon";
-import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
-import {MatProgressSpinner} from "@angular/material/progress-spinner";
-import {MatTooltip} from "@angular/material/tooltip";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {Node, NodeChange, NodePositionChange, VflowComponent, VflowModule} from "ngx-vflow";
 import {RouterLink, RouterOutlet} from "@angular/router";
-import {MatButton, MatIconButton} from "@angular/material/button";
-import {MatToolbar} from "@angular/material/toolbar";
 import {FormsModule} from "@angular/forms";
 import html2canvas from "html2canvas";
 import {ProjectManager} from "../utils/services/project.manager";
 import {ProjectService} from "../utils/services/project.service";
 import {DecoderService} from "../utils/services/decoder.service";
 import {DirectedGraph, VertexRef} from '@vizdom/vizdom-ts-esm';
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatIconModule} from "@angular/material/icon";
+import {MatMenuModule} from "@angular/material/menu";
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {MatSidenavModule} from "@angular/material/sidenav";
+import {MatInputModule} from "@angular/material/input";
+import {MatButtonModule} from "@angular/material/button";
+
 
 @Component({
     selector: 'app-project-view',
@@ -39,29 +30,21 @@ import {DirectedGraph, VertexRef} from '@vizdom/vizdom-ts-esm';
     imports: [
         RouterOutlet,
         VflowModule,
-        MatSidenavContainer,
-        MatSidenav,
-        MatButton,
-        MatSidenavContent,
-        MatToolbar,
-        MatIcon,
-        MatIconButton,
         NgClass,
-        MatMenu,
-        MatMenuItem,
-        MatMenuTrigger,
         FormsModule,
-        MatTooltip,
-        MatDrawerContainer,
-        MatDrawer,
-        MatDrawerContent,
-        MatProgressSpinner,
         NgIf,
         RouterLink,
         NgForOf,
+        MatProgressSpinnerModule,
+        MatIconModule,
+        MatMenuModule,
+        MatTooltipModule,
+        MatSidenavModule,
+        MatInputModule,
+        MatButtonModule,
     ],
     templateUrl: './project-view.component.html',
-    styleUrl: './project-view.component.css',
+    styleUrls: ['./project-view.component.css'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectViewComponent implements OnInit {
@@ -75,6 +58,41 @@ export class ProjectViewComponent implements OnInit {
     // ELEMENTS
     @ViewChild(VflowComponent) public flow!: VflowComponent;
     @ViewChild('projectNameInput') private projectName: any;
+    @ViewChild('parsingSidenav') private parsingSidenav: any;
+    @ViewChild('requestBuilderSidenav') private requestBuilderSidenav: any;
+    @ViewChild('contentContainer') private contentContainer: any;
+
+    @HostListener('window:keydown', ['$event'])
+    keyDownEvent(event: KeyboardEvent) {
+        if (event.key == 't') this.newNode();
+        if (event.ctrlKey) {
+            switch (event.key) {
+                case 'f':
+                    event.preventDefault();
+                    this.parsingSidenav.toggle();
+                    break;
+                case 'l':
+                    if (event.altKey) {
+                        event.preventDefault();
+                        this.fixLayout();
+                    }
+                    break;
+                case '0':
+                    event.preventDefault();
+                    this.zoomToFit();
+                    break;
+                case 'k':
+                    event.preventDefault();
+                    this.parsingSidenav.toggle();
+                    break;
+                case 'p':
+                    event.preventDefault();
+                    this.requestBuilderSidenav.toggle();
+                    break;
+            }
+        }
+    }
+
     // VARS
     projectId: string = '';
     textView: string = '';
@@ -124,6 +142,8 @@ export class ProjectViewComponent implements OnInit {
     }
 
     debug() {
+        console.log(this.decoderService.decode(this.textView));
+        console.log(JSON.stringify(this.decoderService.decode(this.textView)));
     }
 
     updateNodePosition(changes: NodePositionChange[]) {
@@ -137,6 +157,7 @@ export class ProjectViewComponent implements OnInit {
 
     decodeTextView() {
         this.projectManager.$project!.nodes = this.decoderService.decode(this.textView);
+        this.fixLayout();
         this.zoomToFit();
     }
 
@@ -151,7 +172,7 @@ export class ProjectViewComponent implements OnInit {
         this.projectManager.$project!.nodes.forEach(n => {
             const v = graph.new_vertex({
                 layout: {
-                    shape_w: 150,
+                    shape_w: 200,
                     shape_h: 100
                 },
                 render: {
@@ -160,7 +181,6 @@ export class ProjectViewComponent implements OnInit {
             }, {
                 compute_bounding_box: false
             });
-
             vertices.set(n.id, v)
             nodes.set(n.id, n)
         });
@@ -186,4 +206,9 @@ export class ProjectViewComponent implements OnInit {
         });
         // this.edges = edgesToLayout
     }
+
+    newNode() {
+        this.projectManager.addNode(this.flow, this.contentContainer);
+    }
 }
+

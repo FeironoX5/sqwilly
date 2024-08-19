@@ -7,16 +7,15 @@ import {
 } from '@angular/core';
 import {CustomNodeComponent, VflowModule} from "ngx-vflow";
 import {SQLField, SQLTable} from "../utils/models";
-import {MatFormField, MatInput, MatPrefix, MatSuffix} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
-import {MatIcon} from "@angular/material/icon";
+import {MatIcon, MatIconModule} from "@angular/material/icon";
 import {OrderFields} from "../utils/pipes";
-import {CdkTextareaAutosize} from "@angular/cdk/text-field";
-import {NgClass, NgStyle} from "@angular/common";
+import {CdkTextareaAutosize, TextFieldModule} from "@angular/cdk/text-field";
+import {NgClass, NgForOf, NgStyle} from "@angular/common";
 import {MatIconButton} from "@angular/material/button";
-import {MatTooltip} from "@angular/material/tooltip";
+import {MatTooltip, MatTooltipModule} from "@angular/material/tooltip";
 import {CommentsHandler} from "../utils/handlers/comments-handler";
-import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
+import {MatMenu, MatMenuItem, MatMenuModule, MatMenuTrigger} from "@angular/material/menu";
 
 @Component({
     selector: 'app-table-node',
@@ -24,23 +23,17 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
     imports: [
         OrderFields,
         FormsModule,
-        CdkTextareaAutosize,
         NgClass,
         NgStyle,
         VflowModule,
-        MatIcon,
-        MatPrefix,
-        MatSuffix,
-        MatIconButton,
-        MatFormField,
-        MatInput,
-        MatTooltip,
-        MatMenuTrigger,
-        MatMenu,
-        MatMenuItem
+        MatIconModule,
+        NgForOf,
+        MatTooltipModule,
+        MatMenuModule,
+        TextFieldModule
     ],
     templateUrl: './table-node.component.html',
-    styleUrl: './table-node.component.css'
+    styleUrls: ['./table-node.component.css']
 })
 export class TableNodeComponent extends CustomNodeComponent<SQLTable> {
     @ViewChildren('fieldName') fieldNames: QueryList<ElementRef> | undefined;
