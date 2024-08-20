@@ -30,8 +30,8 @@
             <span class="title">{{ project.name }}</span>
             <span class="subtitle">{{ project.createdAt | date: 'short' }}</span>
         </div>
-        <div class="crop-container" style="width: 100%; height: var(--project-image-height);">
-            <img [src]="project.imagePreviewData ? project.imagePreviewData : 'empty_preview.png'"
+        <div *ngIf="project.imagePreviewData" class="crop-container" style="width: 100%; height: var(--project-image-height);">
+            <img [src]="project.imagePreviewData"
                  style="width: calc(100% + 2px); height: calc(var(--project-image-height) + 2px); margin-left: -2px; margin-top: -2px;">
         </div>
     </div>
