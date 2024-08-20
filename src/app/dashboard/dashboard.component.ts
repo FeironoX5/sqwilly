@@ -47,7 +47,7 @@ export class DashboardComponent implements OnInit {
 
     protected iWantPashalka() {
         this.pashalkaCounter++;
-        if (this.pashalkaCounter > 6) {
+        if (this.pashalkaCounter > 3) {
             this.pashalkaCounter = 0;
         }
     }

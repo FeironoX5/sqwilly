@@ -23,7 +23,12 @@ export class ProjectFilterPipe implements PipeTransform {
         if (!projects) return [];
         if (!searchText) return projects;
         return projects.filter(project => {
+            console.log(0);
             return project.name.toLocaleLowerCase().includes(searchText.toLocaleLowerCase());
-        }).sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+        }).sort((a, b) => {
+            console.log(1); // todo wtf doesnt work
+            console.log((a.createdAt.getTime() - b.createdAt.getTime()));
+            return (a.createdAt.getTime() - b.createdAt.getTime());
+        });
     }
 }

@@ -1,22 +1,25 @@
-import {Node} from "ngx-vflow";
-import {TableNodeComponent} from "../table-node/table-node.component";
+import {Edge, Node} from "ngx-vflow";
+import {TableNodeComponent} from "../project-view/table-node/table-node.component";
 
 export class Project {
     name: string;
     readonly id: string;
     imagePreviewData: string;
     nodes: Node[];
+    edges: Edge[];
     readonly createdAt: Date;
 
     constructor(name: string,
                 id: string = crypto.randomUUID(),
                 imagePreviewData: string = '',
                 nodes: Node[] = [],
+                edges: Edge[] = [],
                 createdAt: Date = new Date()) {
         this.name = name;
         this.id = id;
         this.imagePreviewData = imagePreviewData;
         this.nodes = nodes;
+        this.edges = edges;
         this.createdAt = createdAt;
     }
 
@@ -30,7 +33,7 @@ export class Project {
                 data: objectNode.data
             }];
         });
-        return new Project(objectProject.name, objectProject.id, objectProject.imagePreviewData, nodes, objectProject.createdAt)
+        return new Project(objectProject.name, objectProject.id, objectProject.imagePreviewData, nodes, objectProject.edges, objectProject.createdAt)
     }
 }
 

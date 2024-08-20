@@ -8,14 +8,14 @@ import {
     ViewChild
 } from '@angular/core';
 import {NgClass, NgForOf, NgIf} from "@angular/common";
-import {Node, NodePositionChange, VflowComponent, VflowModule} from "ngx-vflow";
+import {Connection, ConnectionSettings, Node, NodePositionChange, VflowComponent, VflowModule} from "ngx-vflow";
 import {RouterLink, RouterOutlet} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import html2canvas from "html2canvas";
 import {ProjectManager} from "../utils/services/project.manager";
 import {ProjectService} from "../utils/services/project.service";
 import {DecoderService} from "../utils/services/decoder.service";
-import {DirectedGraph, VertexRef} from '@vizdom/vizdom-ts-esm';
+import {DirectedGraph, RankDir, VertexRef} from '@vizdom/vizdom-ts-esm';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatIconModule} from "@angular/material/icon";
 import {MatMenuModule} from "@angular/material/menu";
@@ -24,6 +24,8 @@ import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import {SQLField} from "../utils/models";
+import {RequestBuilderComponent} from "./request-builder/request-builder.component";
+import {ParsingToolComponent} from "./parsing-tool/parsing-tool.component";
 
 
 @Component({
@@ -44,6 +46,8 @@ import {SQLField} from "../utils/models";
         MatSidenavModule,
         MatInputModule,
         MatButtonModule,
+        RequestBuilderComponent,
+        ParsingToolComponent,
     ],
     templateUrl: './project-view.component.html',
     styleUrls: ['./project-view.component.css'],
@@ -103,6 +107,10 @@ export class ProjectViewComponent implements OnInit {
     savingInProgress: boolean = false;
     // READONLY VARS
     protected readonly window = window;
+    protected readonly flowConnection: ConnectionSettings = {
+        mode: 'strict',
+        curve: 'bezier'
+    };
 
     // INITS
     constructor(
@@ -157,22 +165,23 @@ export class ProjectViewComponent implements OnInit {
     decodeTextView() {
         this.projectManager.$project!.nodes = this.decoderService.decode(this.textView);
         this.fixLayout();
-        this.zoomToFit();
+        setTimeout(() => this.zoomToFit(), 500);
     }
 
     fixLayout() {
         const graph = new DirectedGraph({
             layout: {
-                margin_x: 75
+                margin_x: 75,
+                rank_dir: RankDir.LR
             }
         })
         const vertices = new Map<string, VertexRef>()
         const nodes = new Map<string, Node>()
-        this.projectManager.$project!.nodes.forEach(n => {
+        this.projectManager.$project!.nodes.forEach((n: any) => {
             const v = graph.new_vertex({
                 layout: {
                     shape_w: 200,
-                    shape_h: 100
+                    shape_h: 28 * (n.data.fields.length + 1)
                 },
                 render: {
                     id: n.id
@@ -184,12 +193,12 @@ export class ProjectViewComponent implements OnInit {
             nodes.set(n.id, n)
         });
 
-        // edgesToLayout.forEach(e => {
-        //     graph.new_edge(
-        //         vertices.get(e.source)!,
-        //         vertices.get(e.target)!,
-        //     )
-        // })
+        this.projectManager.$project!.edges.forEach(e => {
+            graph.new_edge(
+                vertices.get(e.source)!,
+                vertices.get(e.target)!,
+            )
+        })
 
         const layout = graph.layout().to_json().to_obj()
 
@@ -203,7 +212,6 @@ export class ProjectViewComponent implements OnInit {
                 },
             }
         });
-        // this.edges = edgesToLayout
     }
 
     updateTablesDataFromNodes() {
@@ -221,6 +229,11 @@ export class ProjectViewComponent implements OnInit {
     newNode() {
         this.updateTablesDataFromNodes();
         this.projectManager.addNode(this.flow, this.contentContainer);
+    }
+
+    newEdge({ source, target, sourceHandle, targetHandle }: Connection) {
+        console.log(source, target, sourceHandle, targetHandle)
+        this.projectManager.addEdge(source, target, sourceHandle, targetHandle);
     }
 }
 

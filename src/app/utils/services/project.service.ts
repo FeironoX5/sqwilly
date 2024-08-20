@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {Project} from "../models";
-import {TableNodeComponent} from "../../table-node/table-node.component";
+import {TableNodeComponent} from "../../project-view/table-node/table-node.component";
 import {LSProjectLoader, ProjectsLoader} from "../loaders";
 
 @Injectable({

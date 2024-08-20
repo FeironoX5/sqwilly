@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Injectable} from "@angular/core";
 import {Project, SQLTable} from "../models";
-import {TableNodeComponent} from "../../table-node/table-node.component";
+import {TableNodeComponent} from "../../project-view/table-node/table-node.component";
 import {ProjectService} from "./project.service";
 
 @Injectable({
@@ -14,7 +14,7 @@ export class ProjectManager {
         return this;
     }
 
-    addNode(flow: any,contentContainer: HTMLDivElement) {
+    addNode(flow: any, contentContainer: HTMLDivElement) {
         this.$project!.nodes = [...this.$project!.nodes, {
             id: crypto.randomUUID(),
             point: flow.documentPointToFlowPoint({
@@ -27,5 +27,23 @@ export class ProjectManager {
                 fields: []
             } satisfies SQLTable
         }];
+    }
+
+    addEdge(source: string,
+            target: string,
+            sourceHandle: string | undefined,
+            targetHandle: string | undefined) {
+        this.$project!.edges = [...this.$project!.edges, {
+            id: `${source} -> ${target}${sourceHandle ?? ''}${targetHandle ?? ''}`,
+            source,
+            target,
+            sourceHandle,
+            targetHandle,
+            markers: {
+                end: {
+                    type: 'arrow-closed'
+                }
+            }
+        }]
     }
 }

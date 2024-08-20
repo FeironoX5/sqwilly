@@ -1,0 +1,10 @@
+<div class="full" style="width: 350px; background: var(--background-l1-color); padding: 15px; box-sizing: border-box">
+    <mat-button-toggle-group [(ngModel)]="dataType">
+        <mat-button-toggle [value]="0">Sqwilly</mat-button-toggle>
+        <mat-button-toggle [value]="1">SQL schema</mat-button-toggle>
+        <mat-button-toggle [value]="2">JSON</mat-button-toggle>
+    </mat-button-toggle-group>
+    <textarea [(ngModel)]="sqwillyData"
+              style="margin-top: 10px; width: 100%; padding: 10px; box-sizing: border-box; height: 200px; background: var(--background-l2-color)"></textarea>
+    <button style="width: 100%; box-sizing: border-box; padding: 20px; background:var(--background-l2-color); cursor: pointer;">Parse</button>
+</div>

@@ -1,17 +1,10 @@
 <mat-drawer-container *ngIf="projectManager.$project"
                       style="position: absolute;  top: 0;  bottom: 0;  left: 0;  right: 0;" autosize>
     <mat-drawer #parsingSidenav mode="side" position="end">
-                <textarea (input)="decodeTextView()" [(ngModel)]="textView"
-                          style="width: calc(100% - 40px); height: calc(100% - 40px); padding: 20px; background: transparent"></textarea>
+        <app-parsing-tool></app-parsing-tool>
     </mat-drawer>
     <mat-drawer #requestBuilderSidenav mode="side" position="start">
-        <mat-form-field appearance="outline">
-            <input matInput placeholder="Placeholder">
-            <button mat-icon-button matSuffix>
-                <mat-icon>remove</mat-icon>
-            </button>
-        </mat-form-field>
-        <button mat-button>Add table</button>
+        <app-request-builder></app-request-builder>
     </mat-drawer>
     <div #contentContainer style="height: 100%; width: 100%; position: relative; overflow: hidden;">
         <div class="menu" id="toolbar">
@@ -82,9 +75,13 @@
             <span #projectNameInput class="input" spellcheck="false" role="textbox"
                   contenteditable>{{ projectManager.$project.name }}</span>
         </div>
-        <vflow id="flow" [nodes]="projectManager.$project.nodes" view="auto"
+        <vflow id="flow" view="auto"
+               [nodes]="projectManager.$project.nodes"
+               [edges]="projectManager.$project.edges"
                [background]="{type: 'dots', color: '#424242', backgroundColor: '#161617'}"
-               (onNodesChange.position)="updateNodePosition($event)"></vflow>
+               [connection]="flowConnection"
+               (onNodesChange.position)="updateNodePosition($event)"
+               (onConnect)="newEdge($event)"></vflow>
     </div>
 </mat-drawer-container>
 <div *ngIf="!projectManager.$project"

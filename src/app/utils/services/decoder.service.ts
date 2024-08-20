@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {Node} from "ngx-vflow";
-import {TableNodeComponent} from "../../table-node/table-node.component";
+import {TableNodeComponent} from "../../project-view/table-node/table-node.component";
 
 @Injectable({
     providedIn: 'root'

@@ -6,15 +6,15 @@ import {
     ViewChildren
 } from '@angular/core';
 import {CustomNodeComponent, VflowModule} from "ngx-vflow";
-import {SQLField, SQLTable} from "../utils/models";
+import {SQLField, SQLTable} from "../../utils/models";
 import {FormsModule} from "@angular/forms";
 import {MatIcon, MatIconModule} from "@angular/material/icon";
-import {OrderFields} from "../utils/pipes";
+import {OrderFields} from "../../utils/pipes";
 import {CdkTextareaAutosize, TextFieldModule} from "@angular/cdk/text-field";
-import {NgClass, NgForOf, NgStyle} from "@angular/common";
+import {NgClass, NgForOf, NgIf, NgStyle} from "@angular/common";
 import {MatIconButton} from "@angular/material/button";
 import {MatTooltip, MatTooltipModule} from "@angular/material/tooltip";
-import {CommentsHandler} from "../utils/handlers/comments-handler";
+import {CommentsHandler} from "../../utils/handlers/comments-handler";
 import {MatMenu, MatMenuItem, MatMenuModule, MatMenuTrigger} from "@angular/material/menu";
 
 @Component({
@@ -30,7 +30,8 @@ import {MatMenu, MatMenuItem, MatMenuModule, MatMenuTrigger} from "@angular/mate
         NgForOf,
         MatTooltipModule,
         MatMenuModule,
-        TextFieldModule
+        TextFieldModule,
+        NgIf
     ],
     templateUrl: './table-node.component.html',
     styleUrls: ['./table-node.component.css']

@@ -31,6 +31,11 @@ body {
   background: var(--background-l0-color)
 }
 
+img {
+  pointer-events: none
+}
+
+
 /* !variables */
 :root {
   // spaces & sizes
@@ -46,6 +51,7 @@ body {
   // colors
   --background-l0-color: #171717;
   --background-l1-color: #212123;
+  --background-l2-color: #2e2e30;
   --text-color: #FFFFFF;
   --text-disabled-color: #C0C0C0;
   --text-active-color: #212123;
@@ -200,6 +206,7 @@ button:not(.icon-button) img {
   --text-disabled-color: var(--text-active-color);
   --text-color: var(--text-active-color);
 }
+
 .icon-button.active {
   background: var(--border-active-color);
 }

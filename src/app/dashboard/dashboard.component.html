@@ -1,14 +1,16 @@
 <div style="height: 40vh;">
     <div class="centered flex-column full">
         <button class="icon-text-button" (click)="iWantPashalka()" style="cursor: pointer;">
-            <img src="assets/logo.svg" *ngIf="pashalkaCounter <= 5">
-            <img style="height: 100px;" src="assets/gnojnyj-privet.gif" *ngIf="pashalkaCounter > 5">
+            <img src="assets/logo.svg" *ngIf="pashalkaCounter <= 2">
+            <img style="height: 100px;" src="assets/gnojnyj-privet.gif" *ngIf="pashalkaCounter > 2">
         </button>
-        <p style="opacity: 0.2;text-align: center">developed by Gleb Kiva</p>
+        <a style="opacity: 0.2; text-align: center; text-decoration: none;" href="http://github.com/FeironoX5">
+            developed by Gleb Kiva
+        </a>
     </div>
 </div>
 <div style="padding: 0 20px 20px;display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px 10px">
-    <input *ngIf="projects.length > 3" class="big-input" placeholder="Поиск проекта"
+    <input *ngIf="projects.length > 2" class="big-input" placeholder="Поиск проекта"
            style="grid-column-start: 1;  grid-column-end: 4;"
            [(ngModel)]="projectSearchValue">
     <div *ngIf="!projectSearchValue" class="create-button" (click)="createProject()">
@@ -30,7 +32,7 @@
         </div>
         <div class="crop-container" style="width: 100%; height: var(--project-image-height);">
             <img [src]="project.imagePreviewData ? project.imagePreviewData : 'empty_preview.png'"
-                 style="width: calc(100% + 2px); calc(var(--project-image-height) + 2px); margin-left: -2px; margin-top: -2px;">
+                 style="width: calc(100% + 2px); height: calc(var(--project-image-height) + 2px); margin-left: -2px; margin-top: -2px;">
         </div>
     </div>
 </div>
