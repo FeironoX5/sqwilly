@@ -66,7 +66,6 @@ export class ProjectViewComponent implements OnInit {
     @ViewChild('projectNameInput') private projectName: any;
     @ViewChild('parsingSidenav') private parsingSidenav: any;
     @ViewChild('requestBuilderSidenav') private requestBuilderSidenav: any;
-    @ViewChild('contentContainer') private contentContainer: any;
 
     @HostListener('window:keydown', ['$event'])
     keyDownEvent(event: KeyboardEvent) {
@@ -228,7 +227,10 @@ export class ProjectViewComponent implements OnInit {
 
     newNode() {
         this.updateTablesDataFromNodes();
-        this.projectManager.addNode(this.flow, this.contentContainer);
+        this.projectManager.addNode(this.flow.documentPointToFlowPoint({
+            x: document.getElementById('flow')!.clientWidth / 2 - 100,
+            y: document.getElementById('flow')!.clientHeight / 2
+        }));
     }
 
     newEdge({ source, target, sourceHandle, targetHandle }: Connection) {
